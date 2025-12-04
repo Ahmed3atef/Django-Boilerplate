@@ -5,6 +5,24 @@ name = "pypi"
 
 [packages]
 django = "*"
+pillow = "*"
+django-cleanup = "*"
+django-allauth = "*"
+django-htmx = "*"
+django-debug-toolbar = "*"
+djangorestframework = "*"
+djangorestframework-simplejwt = "*"
+dj-database-url = "*"
+whitenoise = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+drf-yasg = "*"
+djoser = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-watch = "*"
+django-cors-headers = "*"
+social-auth-app-django = "*"
 
 [dev-packages]
 
