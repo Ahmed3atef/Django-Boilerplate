@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from rest_framework import permissions
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from users.views import profile_view
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -25,8 +26,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('auth/', include('djoser.urls')),
+    path('accounts/', include('allauth.urls')),
     path('', include('home.urls')),
     path('profile/', include('users.urls')),
+    path('@<username>/', profile_view, name="profile"),
     
     
     # doc
