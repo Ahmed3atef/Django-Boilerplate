@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 django = "*"
 pillow = "*"
-django-cleanup = "*"
 django-allauth = "*"
 django-htmx = "*"
 django-debug-toolbar = "*"
@@ -23,6 +22,7 @@ pytest-django = "*"
 pytest-watch = "*"
 django-cors-headers = "*"
 social-auth-app-django = "*"
+django-cleanup = "*"
 
 [dev-packages]
 

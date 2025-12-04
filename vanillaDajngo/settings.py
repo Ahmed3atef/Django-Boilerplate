@@ -38,11 +38,13 @@ EXTERNAL_APPS = [
     'rest_framework_simplejwt',
     'drf_yasg',
     'corsheaders',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 LOCAL_APPS = [
     'core.apps.CoreConfig',
     'home.apps.HomeConfig',
+    'users.apps.UsersConfig',
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS + LOCAL_APPS
@@ -139,6 +141,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Whitenoise configrations
 
