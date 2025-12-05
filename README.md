@@ -19,17 +19,17 @@
 
 ## ✨ Features
 
-- 📦 **Django 6.0**: The web framework for perfectionists with deadlines.
-- 🐘 **PostgreSQL**: The world's most advanced open source relational database.
-- 🔧 **REST Framework**: Powerful and flexible toolkit for building Web APIs.
-- 🔐 **JWT Authentication**: Using `djangorestframework-simplejwt`.
-- 🧑‍🤝‍🧑 **User Management**: With `djoser` and `django-allauth`.
-- 🚀 **Celery**: For background tasks with Redis as a broker.
-- 🐳 **Docker**: Fully containerized for development and production.
-- ⚙️ **Split Settings**: Separate settings for `dev` and `pro` environments.
-- ⚡ **HTMX**: For modern, dynamic front-ends without complex JavaScript.
-- 🕵️ **Debugging & Profiling**: With `django-debug-toolbar` and `django-silk`.
-- 🧹 **Code Quality**: Pre-configured with `ruff` for linting and formatting.
+-   📦 **Django 6.0**: The web framework for perfectionists with deadlines.
+-   🐘 **PostgreSQL**: The world's most advanced open source relational database.
+-   🔧 **REST Framework**: Powerful and flexible toolkit for building Web APIs.
+-   🔐 **JWT Authentication**: Using `djangorestframework-simplejwt`.
+-   🧑‍🤝‍🧑 **User Management**: With `djoser` and `django-allauth`.
+-   🚀 **Celery**: For background tasks with Redis as a broker.
+-   🐳 **Docker**: Fully containerized for development and production.
+-   ⚙️ **Split Settings**: Separate settings for `dev` and `pro` environments.
+-   ⚡ **HTMX**: For modern, dynamic front-ends without complex JavaScript.
+-   🕵️ **Debugging & Profiling**: With `django-debug-toolbar` and `django-silk`.
+-   🧹 **Code Quality**: Pre-configured with `ruff` for linting and formatting.
 
 ## 🏗️ Project Structure
 
@@ -38,7 +38,7 @@
 ├── core/                 # Core app for shared functionality
 ├── home/                 # Example app
 ├── users/                # User management app
-├── MAIN/
+├── main/
 │   ├── settings/
 │   │   ├── common.py     # Common settings
 │   │   ├── dev.py        # Development settings
@@ -58,9 +58,9 @@
 
 ### Prerequisites
 
-- Python 3.12+
-- Pipenv
-- Docker and Docker Compose
+-   Python 3.12+
+-   Pipenv
+-   Docker and Docker Compose
 
 ### 1. Clone the repository
 
@@ -77,6 +77,7 @@ Create a `.env` file in the project root. You can copy the example:
 cp .env.example .env
 cp docker/.env.example docker/.env
 ```
+
 Then, fill in the `.env` file with your database credentials, `DJANGO_KEY`, and other settings.
 
 ### 3. Install dependencies
@@ -85,6 +86,7 @@ Then, fill in the `.env` file with your database credentials, `DJANGO_KEY`, and 
 pipenv install
 pipenv install --dev
 ```
+
 ### 4. Start Docker services
 
 Use the custom management command to start the PostgreSQL, Redis, and SMTP4Dev containers in the background:
@@ -99,7 +101,6 @@ pipenv run python manage.py startdockerservers
 pipenv run python manage.py migrate
 ```
 
-
 ### 6. Start the development server
 
 ```bash
@@ -108,15 +109,58 @@ pipenv run python manage.py runserver
 
 The application will be available at `http://127.0.0.1:8000`.
 
+## Other Commands
+
+### Start Individual Docker Services
+
+If you prefer to run services individually instead of all at once, you can use the following commands from the project root:
+
+-   **Start Redis:**
+
+    ```bash
+    docker-compose -f Docker/docker-compose.yml up -d redis
+    ```
+
+-   **Start SMTP4Dev:**
+    ```bash
+    docker-compose -f Docker/docker-compose.yml up -d smtp4dev
+    ```
+
+### Celery
+
+-   **Run Celery Worker:**
+    To process background tasks, start a Celery worker:
+
+    ```bash
+    pipenv run celery -A main worker -l info
+    ```
+
+-   **Run Flower (Celery Monitoring):**
+    Flower is a web-based tool for monitoring your Celery workers.
+    ```bash
+    pipenv run celery -A main flower
+    ```
+    Flower will be available at `http://localhost:5555`.
+
+### Locust
+
+To run performance tests with Locust:
+
+```bash
+pipenv run locust -f locustfiles/users.py
+```
+
+Then, open your browser to `http://localhost:8089` to start the test.
+
 ## 🛠️ Technology Stack
 
-- **Backend**: Django, Django REST Framework
-- **Database**: PostgreSQL, Redis
-- **Async Tasks**: Celery
-- **Containerization**: Docker
-- **Frontend**: Django Templates, HTMX
-- **Authentication**: `django-allauth`, `djoser`, `rest_framework_simplejwt`
-- **Development**: `django-debug-toolbar`, `django-silk`
+-   **Backend**: Django, Django REST Framework
+-   **Database**: PostgreSQL, Redis
+-   **Async Tasks**: Celery
+-   **Containerization**: Docker
+-   **Frontend**: Django Templates, HTMX
+-   **Authentication**: `django-allauth`, `djoser`, `rest_framework_simplejwt`
+-   **Development**: `django-debug-toolbar`, `django-silk`
 
 ## 📄 License
 
