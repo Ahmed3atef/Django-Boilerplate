@@ -47,6 +47,7 @@ EXTERNAL_APPS = [
     'corsheaders',
     'django_cleanup.apps.CleanupConfig',
     'django_htmx',
+    'silk',
 ]
 
 LOCAL_APPS = [
@@ -73,6 +74,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE.append("silk.middleware.SilkyMiddleware")
 
 ROOT_URLCONF = 'MAIN.urls'
 
