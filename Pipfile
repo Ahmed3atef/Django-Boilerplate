@@ -23,6 +23,7 @@ redis = "*"
 flower = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
+django-redis = "*"
 
 [dev-packages]
 pytest = "*"
