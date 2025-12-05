@@ -38,7 +38,7 @@
 ├── core/                 # Core app for shared functionality
 ├── home/                 # Example app
 ├── users/                # User management app
-├── main/
+├── mainProject/
 │   ├── settings/
 │   │   ├── common.py     # Common settings
 │   │   ├── dev.py        # Development settings
@@ -111,46 +111,44 @@ The application will be available at `http://127.0.0.1:8000`.
 
 ## Other Commands
 
-### Start Individual Docker Services
-
-If you prefer to run services individually instead of all at once, you can use the following commands from the project root:
+You can run various services using Django's management commands.
 
 -   **Start Redis:**
 
     ```bash
-    docker-compose -f Docker/docker-compose.yml up -d redis
+    pipenv run python manage.py start_redis
     ```
 
 -   **Start SMTP4Dev:**
+
     ```bash
-    docker-compose -f Docker/docker-compose.yml up -d smtp4dev
+    pipenv run python manage.py start_smtp4dev
     ```
 
-### Celery
-
 -   **Run Celery Worker:**
-    To process background tasks, start a Celery worker:
 
     ```bash
-    pipenv run celery -A main worker -l info
+    pipenv run python manage.py start_celery_worker
+    ```
+
+-   **Run Celery Beat:**
+    ```bash
+    pipenv run python manage.py start_celery_beat
     ```
 
 -   **Run Flower (Celery Monitoring):**
-    Flower is a web-based tool for monitoring your Celery workers.
+
     ```bash
-    pipenv run celery -A main flower
+    pipenv run python manage.py start_celery_flower
     ```
+
     Flower will be available at `http://localhost:5555`.
 
-### Locust
-
-To run performance tests with Locust:
-
-```bash
-pipenv run locust -f locustfiles/users.py
-```
-
-Then, open your browser to `http://localhost:8089` to start the test.
+-   **Run Locust:**
+    ```bash
+    pipenv run python manage.py start_locust
+    ```
+    Then, open your browser to `http://localhost:8089` to start the test.
 
 ## 🛠️ Technology Stack
 
