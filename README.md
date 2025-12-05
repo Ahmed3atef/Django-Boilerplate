@@ -83,6 +83,7 @@ Then, fill in the `.env` file with your database credentials, `DJANGO_KEY`, and 
 
 ```bash
 pipenv install
+pipenv install --dev
 ```
 ### 4. Start Docker services
 
