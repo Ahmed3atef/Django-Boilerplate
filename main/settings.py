@@ -1,21 +1,25 @@
+from datetime import timedelta
 from pathlib import Path
 import dj_database_url
 import os
+from celery.schedules import crontab
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-728mw8awjmqw5tg#nuvqn8!(9!ze3orne#^2yn=mibwskavh@o'
+# you can get new one from https://djecrety.ir/
+SECRET_KEY = os.environ.get('DJANGO_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -42,6 +46,7 @@ EXTERNAL_APPS = [
     'drf_yasg',
     'corsheaders',
     'django_cleanup.apps.CleanupConfig',
+    'django_htmx',
 ]
 
 LOCAL_APPS = [
@@ -59,6 +64,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -91,10 +97,21 @@ WSGI_APPLICATION = 'MAIN.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
 
@@ -143,9 +160,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-MEDIA_URL = 'media/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTHENTICATION_BACKENDS = [
@@ -158,38 +176,58 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_REDIRECT_URL = "/"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'localhost'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 2525
+DEFAULT_FROM_EMAIL= 'from@email.com'
+
 ACCOUTN_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 
+# celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
+CELERY_BEAT_SCHEDULE = {
+    'notify_customers': {
+        'task': 'home.tasks.notify_customers',
+        'schedule': 5, #crontab(day_of_week=1, hour=7, minute=30),
+        'args': ['Hello World!']
+    }
+}
+
 # Whitenoise configrations
 
-# STORAGES = {
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Restframework settings
 
-# REST_FRAMEWORK = {
-#     'COERCE_DECIMAL_TO_STRING': False,
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-#     ],
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     )
-# }
+REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
-# DJOSER = {
-#     'SERIALIZERS': {
-#         'user_create': 'core.serializers.UserCreateSerializer',
-#         'current_user': 'core.serializers.UserSerializer',
-#     }
-# }
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'core.serializers.UserCreateSerializer',
+        'current_user': 'core.serializers.UserSerializer',
+    }
+}
 
-# SIMPLE_JWT = {
-#     'AUTH_HEADER_TYPES': ('JWT',),
-#     'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
-# }
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1)
+}
