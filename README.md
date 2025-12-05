@@ -124,7 +124,7 @@ You can run various services using Django's management commands.
     ```bash
     pipenv run python manage.py start_smtp4dev
     ```
-
+    The application will be available at `http://127.0.0.1:5000`.
 -   **Run Celery Worker:**
 
     ```bash

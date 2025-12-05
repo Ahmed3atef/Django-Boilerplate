@@ -18,7 +18,7 @@ class Command(BaseCommand):
         
         try:
             subprocess.run(
-                [sys.executable, "-m", "locust", "-f", locustfile_path],
+                [sys.executable, "-m", "locust", "-f", locustfile_path, "--host", "http://127.0.0.1:8000"],
                 check=True
             )
         except FileNotFoundError:
