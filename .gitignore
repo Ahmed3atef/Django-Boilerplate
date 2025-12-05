@@ -431,3 +431,5 @@ __marimo__/
 .streamlit/secrets.toml
 
 staticfiles/
+media/
+.vscode/
